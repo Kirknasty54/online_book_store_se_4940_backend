@@ -1,6 +1,8 @@
 package org.example.book_store_backend.service;
 
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
+import org.springframework.security.oauth2.jwt.JwsHeader;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
@@ -27,7 +29,9 @@ public class JwtServiceImpl implements JwtService{
                 .subject(userDetails.getUsername())
                 .expiresAt(now.plusSeconds(3600))
                 .build();
-        return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
+        //tells nimbus which algo we're using so it can pick the single hmac key
+        JwsHeader jws = JwsHeader.with(MacAlgorithm.HS256).build();
+        return jwtEncoder.encode(JwtEncoderParameters.from(jws, claims)).getTokenValue();
     }
 
     //write dto that takes username and password

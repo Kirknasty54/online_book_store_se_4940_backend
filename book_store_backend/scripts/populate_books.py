@@ -23,19 +23,36 @@ DB_CONFIG = {
 
 # Google Books API configuration
 GOOGLE_BOOKS_API = "https://www.googleapis.com/books/v1/volumes"
+
+# Expanded search queries with specific subjects and popular terms
 SEARCH_QUERIES = [
-    "fiction", "science fiction", "mystery", "thriller", "romance",
-    "fantasy", "historical fiction", "biography", "self-help", "business"
+    # Fiction genres
+    "subject:fiction+bestseller", "subject:literary+fiction", "subject:contemporary+fiction",
+    "subject:science+fiction", "subject:fantasy", "subject:mystery", "subject:thriller",
+    "subject:horror", "subject:romance", "subject:historical+fiction", "subject:adventure",
+
+    # Non-fiction
+    "subject:biography", "subject:history", "subject:business", "subject:self-help",
+    "subject:psychology", "subject:philosophy", "subject:science", "subject:technology",
+
+    # Other popular categories
+    "subject:cooking", "subject:health", "subject:travel", "subject:art",
+    "subject:music", "subject:sports", "subject:education", "subject:politics",
+
+    # Classics and popular searches
+    "classic+literature", "bestseller+2023", "bestseller+2024", "award+winning+books"
 ]
 
 
-def fetch_books_from_api(query, max_results=40):
-    """Fetch books from Google Books API."""
+def fetch_books_from_api(query, max_results=40, start_index=0):
+    """Fetch books from Google Books API with pagination."""
     params = {
         'q': query,
         'maxResults': max_results,
+        'startIndex': start_index,
         'printType': 'books',
-        'langRestrict': 'en'
+        'langRestrict': 'en',
+        'orderBy': 'relevance'
     }
 
     try:
@@ -89,7 +106,7 @@ def transform_book_data(book_item):
     placeholder = 'https://via.placeholder.com/150'
 
     # Map to small, medium, large
-    image_url_small = image_links.get('small', image_links.get('smallThumbnail', placeholder))
+    image_url_small = image_links.get('smallThumbnail', image_links.get('smallThumbnail', placeholder))
     image_url_medium = image_links.get('medium', image_links.get('thumbnail', placeholder))
     image_url_large = image_links.get('large',
                                      image_links.get('extraLarge',
@@ -176,14 +193,16 @@ def main():
     all_books = []
 
     for query in SEARCH_QUERIES:
-        print(f"\nFetching books for query: '{query}'")
-        book_items = fetch_books_from_api(query)
-        print(f"Found {len(book_items)} books")
+        # Fetch from multiple pages for more variety
+        for start_index in [0, 40]:  # Get 2 pages per query
+            print(f"\nFetching books for query: '{query}' (page {start_index // 40 + 1})")
+            book_items = fetch_books_from_api(query, max_results=40, start_index=start_index)
+            print(f"Found {len(book_items)} books")
 
-        for item in book_items:
-            book_data = transform_book_data(item)
-            if book_data:
-                all_books.append(book_data)
+            for item in book_items:
+                book_data = transform_book_data(item)
+                if book_data:
+                    all_books.append(book_data)
 
     # Remove duplicates based on ISBN
     unique_books = {book['isbn_id']: book for book in all_books}.values()

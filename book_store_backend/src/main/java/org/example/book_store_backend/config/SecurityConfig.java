@@ -30,8 +30,11 @@ public class SecurityConfig {
         return httpSecurity.csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable())
                 .sessionManagement(x -> x.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/users/auth/**").permitAll()
-                        .requestMatchers("/users/register/**").permitAll()
+                        .requestMatchers("/users/auth").permitAll()
+                        .requestMatchers("/users/register").permitAll()
+                        //.requestMatchers("/users/review/").authenticated() //optional, might add later
+                        .requestMatchers("/books/add/**").authenticated() //only admin users can add books
+                        .requestMatchers("/books/remove/**").authenticated() //only admin users can remove boooks
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth -> oauth.jwt())
                 .build();
@@ -51,6 +54,9 @@ public class SecurityConfig {
 
     @Bean
     public JwtEncoder jwtEncoder(){
+        //byte[] byes = jwtSecret.getBytes();
+        //SecretKeySpec originalKey = new SecretKeySpec(byes, 0, byes.length, "HmacSHA256");
+        //return new NimbusJwtEncoder(new ImmutableSecret<>(originalKey));
         return new NimbusJwtEncoder(new ImmutableSecret<>(jwtSecret.getBytes()));
     }
 
