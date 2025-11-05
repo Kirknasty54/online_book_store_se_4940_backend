@@ -56,4 +56,47 @@ public class Book {
 
     public Book(){}
 
+    public long getIsbn_id() {
+        return isbn_id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public String getPublisher() {
+        return publisher;
+    }
+
+    public String getPublished_date() {
+        return published_date;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public String getImage_url_small() {
+        return image_url_small;
+    }
+
+    public String getImage_url_medium() {
+        return image_url_medium;
+    }
+
+    public String getImage_url_large() {
+        return image_url_large;
+    }
 }

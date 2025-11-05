@@ -33,8 +33,6 @@ public class SecurityConfig {
                         .requestMatchers("/users/auth").permitAll()
                         .requestMatchers("/users/register").permitAll()
                         //.requestMatchers("/users/review/").authenticated() //optional, might add later
-                        .requestMatchers("/books/add/**").authenticated() //only admin users can add books
-                        .requestMatchers("/books/remove/**").authenticated() //only admin users can remove boooks
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth -> oauth.jwt())
                 .build();
