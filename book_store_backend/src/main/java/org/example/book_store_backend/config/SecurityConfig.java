@@ -30,10 +30,10 @@ public class SecurityConfig {
         return httpSecurity.csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable())
                 .sessionManagement(x -> x.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/users/auth").permitAll()
-                        .requestMatchers("/users/register").permitAll()
-                        .requestMatchers("/books/allbooks").permitAll()
-                        .requestMatchers("/books/{isbn_id}").permitAll()
+                        .requestMatchers("/api/users/auth").permitAll()
+                        .requestMatchers("/api/users/register").permitAll()
+                        .requestMatchers("/api/books/allbooks").permitAll()
+                        .requestMatchers("/api/books/{isbn_id}").permitAll()
                         //.requestMatchers("/users/review/").authenticated() //optional, might add later
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth -> oauth.jwt())

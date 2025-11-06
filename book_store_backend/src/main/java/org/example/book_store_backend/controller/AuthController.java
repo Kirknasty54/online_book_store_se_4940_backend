@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin
+@RequestMapping("/api/users/")
 public class AuthController {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
@@ -24,7 +25,8 @@ public class AuthController {
         this.userDetailsService = userDetailsService;
     }
 
-    @PostMapping("/users/auth")
+    @PostMapping("/auth")
+    @CrossOrigin
     public ResponseEntity<?> authenticateUser(@RequestBody RequestLoginDTO loginDTO) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword()));
@@ -36,7 +38,7 @@ public class AuthController {
         }
     }
 
-    @PostMapping("/users/register")
+    @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody RequestLoginDTO loginDTO){
         try{
             var user = userDetailsService.createUser(loginDTO.getUsername(), loginDTO.getPassword(), "USER");

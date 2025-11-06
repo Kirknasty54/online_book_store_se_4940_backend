@@ -3,19 +3,21 @@ package org.example.book_store_backend.controller;
 import org.example.book_store_backend.service.BookService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/books/")
+@CrossOrigin
+@RequestMapping("/api/books/")
 public class BookController {
     private final BookService bookService;
     public BookController(BookService bookService) {
         this.bookService = bookService;
     }
 
-    @GetMapping("allbooks")
+    @GetMapping("/allbooks")
     public ResponseEntity<?> getAllBooks(){
         return ResponseEntity.ok(bookService.getAllBooks());
     }
