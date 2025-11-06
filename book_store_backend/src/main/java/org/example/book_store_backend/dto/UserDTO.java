@@ -12,4 +12,19 @@ public class UserDTO {
         this.username = user.getUsername();
         this.id = user.getId();
     }
+
+    public String getUsername() {
+        return username;
+    }
+    public String getId() {
+        return id.toString();
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

@@ -14,6 +14,12 @@ public class BookController {
     public BookController(BookService bookService) {
         this.bookService = bookService;
     }
+
+    @GetMapping("allbooks")
+    public ResponseEntity<?> getAllBooks(){
+        return ResponseEntity.ok(bookService.getAllBooks());
+    }
+
     @GetMapping("/book")
     public ResponseEntity<?> getBook(){
         return ResponseEntity.ok("Book details");

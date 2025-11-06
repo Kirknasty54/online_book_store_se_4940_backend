@@ -3,6 +3,10 @@ package org.example.book_store_backend.dto;
 public class RequestLoginDTO {
     private String username;
     private String password;
+    public RequestLoginDTO(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
     public RequestLoginDTO() {
 
     }
