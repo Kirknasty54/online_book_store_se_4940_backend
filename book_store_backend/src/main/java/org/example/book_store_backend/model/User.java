@@ -44,6 +44,7 @@ public class User implements UserDetails {
     @Column(name="enabled")
     private boolean enabled = true;
 
+
     public User(String username, String password, Role role){
         this.username = username;
         this.password = password;
