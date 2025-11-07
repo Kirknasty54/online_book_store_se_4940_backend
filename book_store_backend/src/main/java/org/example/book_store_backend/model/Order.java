@@ -21,10 +21,17 @@ public class Order {
     )
     private List<Book> books = new ArrayList<>();
 
-    public Order(String order_id, User user, List<Book> books) {
+    @Column(nullable = false, name="shipping_type")
+    private String shipping_type;
+
+    @Column(nullable=false)
+    private double total_price;
+
+    public Order(String order_id, User user, List<Book> books, double total_price) {
         this.order_id = order_id;
         this.user = user;
         this.books = books;
+        this.total_price = total_price;
     }
 
     public Order(){}
@@ -52,4 +59,11 @@ public class Order {
         this.books = books;
     }
 
+    public double getTotal_price() {
+        return total_price;
+    }
+
+    public void setTotal_price(double total_price) {
+        this.total_price = total_price;
+    }
 }
