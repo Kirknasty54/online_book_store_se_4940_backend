@@ -39,11 +39,8 @@ public class BookController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> createBook(@RequestParam String isbn_id, String title, String author, String publisher,
-                                        String published_date, String description, double price, int stock, String image_url_small, String image_url_medium, String image_url_large){
-        long parsed_isbn_id = Long.parseLong(isbn_id);
-        System.out.println(parsed_isbn_id);
-        bookService.addBook(new Book(parsed_isbn_id, title, author, publisher, published_date, description, price, stock, image_url_small, image_url_medium, image_url_large));
+    public ResponseEntity<?> createBook(@RequestBody Book book){
+        bookService.addBook(book);
         return ResponseEntity.ok("Book created");
     }
 }
