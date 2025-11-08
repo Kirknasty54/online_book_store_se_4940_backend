@@ -35,6 +35,11 @@ public class BookService implements BookServiceInterface{
     }
 
     @Override
+    public void addBook(Book book) {
+        bookRepo.save(book);
+    }
+
+    @Override
     public List<Book> getAllBooks() {
         return bookRepo.findAll();
     }
