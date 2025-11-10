@@ -47,5 +47,15 @@ public class AuthController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @DeleteMapping("/delete/{username}")
+    public ResponseEntity<?> deleteUser(@PathVariable String username){
+        try{
+            userDetailsService.deleteUser(username);
+            return ResponseEntity.ok("User deleted");
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }
 

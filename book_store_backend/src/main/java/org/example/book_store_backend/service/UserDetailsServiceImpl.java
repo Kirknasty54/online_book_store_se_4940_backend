@@ -23,6 +23,7 @@ public class UserDetailsServiceImpl implements IUserService{
     }
 
     //determine who the user is, and what their auth is, built into spring security
+    // acts a proxy to the database, controlling the access to User objects through loadUserByUsername
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         var possible_user = userRepo.findByUsername(username).orElseThrow(()-> new UsernameNotFoundException("User not found"));
@@ -43,6 +44,8 @@ public class UserDetailsServiceImpl implements IUserService{
 
     @Override
     public void deleteUser(String username) {
-
+        if(userRepo.existsByUsername(username)){
+            userRepo.deleteByUsername(username);
+        }
     }
 }

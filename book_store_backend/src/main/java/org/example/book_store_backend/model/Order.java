@@ -51,8 +51,8 @@ public class Order {
         this.user = user;
     }
 
-    public List<Book> getBooks() {
-        return books;
+    public BookCollection getBooks() {
+        return new BookCollection(books);
     }
 
     public void setBooks(List<Book> books) {
@@ -66,4 +66,5 @@ public class Order {
     public void setTotal_price(double total_price) {
         this.total_price = total_price;
     }
+
 }

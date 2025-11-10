@@ -25,6 +25,7 @@ import javax.crypto.spec.SecretKeySpec;
 public class SecurityConfig {
     private final String jwtSecret;
 
+    //securityFilterChain method gives a simplified interface to configure complex Spring Security subsystems liek CSRF, session management, and authentication.
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity.csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable())
@@ -34,6 +35,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/users/register").permitAll()
                         .requestMatchers("/api/books/allbooks").permitAll()
                         .requestMatchers("/api/books/{isbn_id}").permitAll()
+                        .requestMatchers("/api/payment/webhook").permitAll()
                         //.requestMatchers("/users/review/").authenticated() //optional, might add later
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth -> oauth.jwt())
