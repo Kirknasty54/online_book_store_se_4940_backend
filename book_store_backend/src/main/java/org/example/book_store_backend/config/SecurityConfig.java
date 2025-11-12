@@ -16,9 +16,13 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import java.util.Arrays;
 
 
 @Configuration
@@ -28,18 +32,36 @@ public class SecurityConfig {
     //securityFilterChain method gives a simplified interface to configure complex Spring Security subsystems liek CSRF, session management, and authentication.
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        return httpSecurity.csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable())
+        return httpSecurity
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable())
                 .sessionManagement(x -> x.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/users/auth").permitAll()
                         .requestMatchers("/api/users/register").permitAll()
                         .requestMatchers("/api/books/allbooks").permitAll()
                         .requestMatchers("/api/books/{isbn_id}").permitAll()
+                        .requestMatchers("/api/payments/**").permitAll()
                         .requestMatchers("/api/payment/webhook").permitAll()
+                        .requestMatchers("/api/orders/**").authenticated()
                         //.requestMatchers("/users/review/").authenticated() //optional, might add later
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth -> oauth.jwt())
                 .build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173", "http://localhost:3000"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowCredentials(true);
+        configuration.setExposedHeaders(Arrays.asList("Authorization"));
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
     @Bean

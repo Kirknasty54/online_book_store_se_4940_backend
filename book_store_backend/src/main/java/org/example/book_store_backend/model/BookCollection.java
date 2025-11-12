@@ -7,4 +7,8 @@ public class BookCollection {
     public BookCollection(List<Book> books) {
         this.books = books;
     }
+
+    public Book[] getBooks() {
+        return books.toArray(new Book[0]);
+    }
 }

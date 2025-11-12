@@ -27,11 +27,18 @@ public class Order {
     @Column(nullable=false)
     private double total_price;
 
+    @Column(name="payment_intent_id")
+    private String paymentIntentId;
+
+    @Column(name="payment_status")
+    private String paymentStatus = "PENDING"; // PENDING, COMPLETED, FAILED
+
     public Order(String order_id, User user, List<Book> books, double total_price) {
         this.order_id = order_id;
         this.user = user;
         this.books = books;
         this.total_price = total_price;
+        this.paymentStatus = "PENDING";
     }
 
     public Order(){}
@@ -67,4 +74,27 @@ public class Order {
         this.total_price = total_price;
     }
 
+    public String getPaymentIntentId() {
+        return paymentIntentId;
+    }
+
+    public void setPaymentIntentId(String paymentIntentId) {
+        this.paymentIntentId = paymentIntentId;
+    }
+
+    public String getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(String paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+
+    public void setShipping_type(String shippingType) {
+        this.shipping_type = shippingType;
+    }
+
+    public Object getShipping_type() {
+        return shipping_type;
+    }
 }
